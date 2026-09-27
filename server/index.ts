@@ -133,13 +133,17 @@ app.post('/api/cohort/send', async (req: Request, res: Response) => {
         const updatedCohort = batchManager.receiveReplies();
         const repliedCount = updatedCohort.filter(p => p.status === 'replied').length;
 
+        const wrongPersonCount = updatedCohort.filter(p => p.replyCategory === 'WRONG_PERSON').length;
+        const objectionCount = updatedCohort.filter(p => p.replyCategory === 'PRICE_OBJECTION').length;
+        const quoteCount = updatedCohort.filter(p => p.replyCategory === 'THIRD_PERSON_QUOTE').length;
+
         flywheelEmitter.emit('flywheel-event', {
             id: `replies-${Date.now()}`,
             timestamp: new Date().toISOString(),
             mode,
             stage: 'CLASSIFIED',
             title: `📬 ${repliedCount} Inbound Customer Replies Received!`,
-            description: `Replies detected: 4 Wrong Person (Referrals), 4 Price Objections (Budget/Apollo), and 4 Buying Signals (Enterprise Quotes).`,
+            description: `Replies detected: ${wrongPersonCount} Referrals (Gear 1), ${objectionCount} Price Objections (Gear 2), and ${quoteCount} Enterprise Quotes (Gear 3).`,
             data: { repliesReceived: repliedCount, activeCohort: updatedCohort }
         });
     }, 1400);

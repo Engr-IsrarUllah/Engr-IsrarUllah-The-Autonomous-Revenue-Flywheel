@@ -77,6 +77,21 @@ export const PROSPECT_REPLY_SCENARIOS: Record<string, {
         gear: 1,
         text: "Not my department. Speak with Amanda Vance, our Head of IT & Systems (amanda.vance@apexlogistics.com)."
     },
+    'lead-13': {
+        category: 'WRONG_PERSON',
+        gear: 1,
+        text: "I don't make tooling decisions here. Please reach out to David Ross, our VP of RevOps (david.ross@datapulse.io)."
+    },
+    'lead-16': {
+        category: 'WRONG_PERSON',
+        gear: 1,
+        text: "Not my department anymore. You should talk with Kevin Smith, our Chief Technology Officer (kevin.smith@cloudcore.io)."
+    },
+    'lead-19': {
+        category: 'WRONG_PERSON',
+        gear: 1,
+        text: "Wrong person for sales infrastructure. Please speak with Laura Chen, our VP of Revenue Operations (laura.chen@globaltalent.ai)."
+    },
 
     // Gear 2: Step Mutator (Competitor & Price Objection)
     'lead-2': {
@@ -99,6 +114,21 @@ export const PROSPECT_REPLY_SCENARIOS: Record<string, {
         gear: 2,
         text: "Looks interesting but our CFO paused all new software spend. Do you offer tool-consolidation discounts?"
     },
+    'lead-14': {
+        category: 'PRICE_OBJECTION',
+        gear: 2,
+        text: "We currently use ZoomInfo and our budget is locked for the quarter. Your solution seems too expensive right now."
+    },
+    'lead-17': {
+        category: 'PRICE_OBJECTION',
+        gear: 2,
+        text: "We already evaluated Apollo and our CFO paused all new software spend. Do you offer vendor consolidation discounts?"
+    },
+    'lead-20': {
+        category: 'PRICE_OBJECTION',
+        gear: 2,
+        text: "We currently use HubSpot and your platform seems pricey. We cannot justify spending without guaranteed ROI."
+    },
 
     // Gear 3: CPQ Quote Engine (Buying Signal)
     'lead-3': {
@@ -120,6 +150,16 @@ export const PROSPECT_REPLY_SCENARIOS: Record<string, {
         category: 'THIRD_PERSON_QUOTE',
         gear: 3,
         text: "Great timing. Send a proposal for 15 seats with Net-30 terms so I can get executive approval today."
+    },
+    'lead-15': {
+        category: 'THIRD_PERSON_QUOTE',
+        gear: 3,
+        text: "This architecture is exactly what we need. Send a quote for 20 seats with Net-30 payment terms so we can sign."
+    },
+    'lead-18': {
+        category: 'THIRD_PERSON_QUOTE',
+        gear: 3,
+        text: "We are ready to move forward. Please send a proposal for 35 seats with Net-30 enterprise terms."
     }
 };
 
@@ -419,9 +459,17 @@ export const batchManager = {
     receiveReplies() {
         const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        cohort.forEach(p => {
-            const scenario = PROSPECT_REPLY_SCENARIOS[p.id];
-            if (scenario) {
+        cohort.forEach((p, idx) => {
+            if (p.status === 'delivered') {
+                const scenario = PROSPECT_REPLY_SCENARIOS[p.id] || {
+                    category: (idx % 3 === 0 ? 'WRONG_PERSON' : idx % 3 === 1 ? 'PRICE_OBJECTION' : 'THIRD_PERSON_QUOTE') as any,
+                    gear: (((idx % 3) + 1) as (1 | 2 | 3)),
+                    text: idx % 3 === 0
+                        ? `I don't handle tooling decisions here. Please reach out to Sarah Jenkins, our VP of Engineering (sarah.jenkins@${p.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.io).`
+                        : idx % 3 === 1
+                        ? `We currently use ZoomInfo and your platform seems pricey for our quarterly budget.`
+                        : `We are ready to move forward. Please send a quote for 25 seats with Net-30 payment terms.`
+                };
                 p.status = 'replied';
                 p.replyCategory = scenario.category;
                 p.replyGear = scenario.gear;
