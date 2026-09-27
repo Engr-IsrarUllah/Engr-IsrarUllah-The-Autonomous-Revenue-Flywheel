@@ -3,7 +3,7 @@
    ========================================================= */
 
 :root {
-    --bg-app: #f8fafc;
+    --bg-app: #e0e1dd;
     --bg-card: #ffffff;
     --bg-card-subtle: #f1f5f9;
     --border-color: #e2e8f0;
@@ -47,8 +47,8 @@
     padding: 0;
 }
 
-body.light-theme {
-    background-color: var(--bg-app);
+html, body, body.light-theme {
+    background-color: #e0e1dd;
     color: var(--text-main);
     font-family: var(--font-sans);
     min-height: 100vh;
