@@ -65,22 +65,22 @@ export const ProspectsList: React.FC<ProspectsListProps> = ({
             All ({allCount})
           </button>
           <button
-            className={`filter-btn ${activeFilter === 'replied' ? 'active' : ''}`}
-            onClick={() => onFilterChange('replied')}
+            className={`filter-btn ${activeFilter === 'automated' ? 'active' : ''}`}
+            onClick={() => onFilterChange('automated')}
           >
-            Replied ({repliedCount})
+            Resolved ({automatedCount})
           </button>
           <button
             className={`filter-btn ${activeFilter === 'delivered' ? 'active' : ''}`}
             onClick={() => onFilterChange('delivered')}
           >
-            Delivered ({deliveredCount})
+            Awaiting Reply ({deliveredCount})
           </button>
           <button
-            className={`filter-btn ${activeFilter === 'automated' ? 'active' : ''}`}
-            onClick={() => onFilterChange('automated')}
+            className={`filter-btn ${activeFilter === 'replied' ? 'active' : ''}`}
+            onClick={() => onFilterChange('replied')}
           >
-            Resolved ({automatedCount})
+            Needs Action ({repliedCount})
           </button>
         </div>
       </div>

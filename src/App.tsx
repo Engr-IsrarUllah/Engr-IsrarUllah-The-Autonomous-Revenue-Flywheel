@@ -45,7 +45,7 @@ export const App: React.FC = () => {
           total: data.cohort.length,
           selected: data.cohort.filter((p: CohortProspect) => p.selected).length,
           delivered: data.cohort.filter((p: CohortProspect) => p.status === 'delivered').length,
-          replied: data.cohort.filter((p: CohortProspect) => p.status === 'replied').length,
+          replied: data.cohort.filter((p: CohortProspect) => p.status === 'replied' || p.status === 'automated').length,
           automated: data.cohort.filter((p: CohortProspect) => p.status === 'automated').length,
         });
       }

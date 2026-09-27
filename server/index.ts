@@ -73,7 +73,7 @@ app.get('/api/cohort', (req: Request, res: Response) => {
     const total = cohort.length;
     const selected = cohort.filter(p => p.selected).length;
     const delivered = cohort.filter(p => p.status === 'delivered').length;
-    const replied = cohort.filter(p => p.status === 'replied').length;
+    const replied = cohort.filter(p => p.status === 'replied' || p.status === 'automated').length;
     const automated = cohort.filter(p => p.status === 'automated').length;
 
     res.json({

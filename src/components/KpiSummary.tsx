@@ -34,7 +34,7 @@ export const KpiSummary: React.FC<KpiSummaryProps> = ({
           <MailOpen size={18} />
         </div>
         <div>
-          <div className="kpi-label">REPLIES</div>
+          <div className="kpi-label">INBOUND REPLIES</div>
           <div className="kpi-value">{metrics.replied}</div>
         </div>
       </div>
