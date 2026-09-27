@@ -1,7 +1,11 @@
 import React from 'react';
-import { Send, CheckCircle2, RotateCcw, Edit3 } from 'lucide-react';
+import { Send, CheckCircle2, RotateCcw, Edit3, Zap, GitBranch, BarChart3 } from 'lucide-react';
+
+export type DashboardTab = 'cockpit' | 'architecture' | 'analytics';
 
 interface HeaderProps {
+  activeTab: DashboardTab;
+  onTabChange: (tab: DashboardTab) => void;
   selectedCount: number;
   isSending: boolean;
   isResolving: boolean;
@@ -12,6 +16,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
+  activeTab,
+  onTabChange,
   selectedCount,
   isSending,
   isResolving,
@@ -22,6 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="app-header">
+      {/* Left: Brand Logo & Title */}
       <div className="header-brand">
         <div className="brand-logo">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -31,14 +38,40 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         <div>
           <div className="brand-title">
-            Graph8 <span className="brand-tag">REVENUE OPS</span>
+            Graph8 <span className="brand-tag">AUTOPILOT</span>
           </div>
           <div className="brand-desc">
-            Automated Outbound Orchestration & CRM Closed-Loop Resolution
+            Autonomous Revenue Flywheel
           </div>
         </div>
       </div>
 
+      {/* Center: View Navigation Tabs */}
+      <div className="header-nav-tabs">
+        <button
+          className={`nav-tab-btn ${activeTab === 'cockpit' ? 'active' : ''}`}
+          onClick={() => onTabChange('cockpit')}
+        >
+          <Zap size={13} />
+          <span>Live Cockpit</span>
+        </button>
+        <button
+          className={`nav-tab-btn ${activeTab === 'architecture' ? 'active' : ''}`}
+          onClick={() => onTabChange('architecture')}
+        >
+          <GitBranch size={13} />
+          <span>3-Gear Architecture</span>
+        </button>
+        <button
+          className={`nav-tab-btn ${activeTab === 'analytics' ? 'active' : ''}`}
+          onClick={() => onTabChange('analytics')}
+        >
+          <BarChart3 size={13} />
+          <span>ROI & Analytics</span>
+        </button>
+      </div>
+
+      {/* Right: Quick Action Controls */}
       <div className="header-actions">
         <div className="system-status-indicator">
           <span className="status-indicator-dot online" />
@@ -46,9 +79,9 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         <div className="header-btn-group">
-          <button className="btn-secondary" onClick={onOpenCompose}>
+          <button className="btn-secondary" onClick={onOpenCompose} title="Compose custom email">
             <Edit3 size={13} />
-            <span>Write Email</span>
+            <span>Template</span>
           </button>
 
           <button
@@ -66,12 +99,11 @@ export const Header: React.FC<HeaderProps> = ({
             disabled={isResolving}
           >
             <CheckCircle2 size={13} />
-            <span>{isResolving ? 'Processing...' : 'Process Inbound'}</span>
+            <span>{isResolving ? 'Resolving...' : 'Process Inbound'}</span>
           </button>
 
-          <button className="btn-secondary" onClick={onReset}>
+          <button className="btn-secondary" onClick={onReset} title="Reset cohort to default">
             <RotateCcw size={13} />
-            <span>Reset</span>
           </button>
         </div>
       </div>

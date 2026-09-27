@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Header } from './components/Header';
+import { Header, DashboardTab } from './components/Header';
 import { KpiSummary } from './components/KpiSummary';
 import { ProspectsList } from './components/ProspectsList';
 import { EmailConversationPane } from './components/EmailConversationPane';
 import { EmailComposeModal } from './components/EmailComposeModal';
 import { TelemetryLog } from './components/TelemetryLog';
+import { ArchitectureView } from './components/ArchitectureView';
+import { AnalyticsView } from './components/AnalyticsView';
 import { CohortProspect, CohortMetrics, FlywheelEvent } from './types';
 import './index.css';
 
@@ -14,6 +16,7 @@ const DEFAULT_TEMPLATE = {
 };
 
 export const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<DashboardTab>('cockpit');
   const [cohort, setCohort] = useState<CohortProspect[]>([]);
   const [metrics, setMetrics] = useState<CohortMetrics>({
     total: 20,
@@ -139,7 +142,6 @@ export const App: React.FC = () => {
         }),
       });
 
-      // Refetch after delay to display inbound replies arriving
       setTimeout(() => {
         fetchCohort();
         setIsSending(false);
@@ -199,7 +201,6 @@ export const App: React.FC = () => {
 
   const handleSaveTemplate = (newTemplate: { subject: string; body: string }) => {
     setTemplate(newTemplate);
-    // Interpolate in memory for active lead preview
     setCohort((prev) =>
       prev.map((p) => {
         if (p.id === selectedLeadId) {
@@ -225,8 +226,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="app-container">
-      {/* Top Header */}
+      {/* Top Header with Tab Navigation */}
       <Header
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
         selectedCount={metrics.selected}
         isSending={isSending}
         isResolving={isResolving}
@@ -236,33 +239,39 @@ export const App: React.FC = () => {
         onReset={handleReset}
       />
 
-      {/* KPI Summary Bar */}
+      {/* KPI Summary Bar (Always visible for real-time awareness) */}
       <KpiSummary metrics={metrics} />
 
-      {/* Dual-Pane Workspace */}
-      <main className="workspace-split">
-        {/* Left Pane: Prospects List */}
-        <section className="left-pane">
-          <ProspectsList
-            cohort={cohort}
-            selectedLeadId={selectedLeadId}
-            activeFilter={activeFilter}
-            onFilterChange={setActiveFilter}
-            onSelectLead={setSelectedLeadId}
-            onToggleCheckbox={handleToggleCheckbox}
-            onToggleSelectAll={handleToggleSelectAll}
-          />
-        </section>
+      {/* Main Content: Cockpit vs Architecture vs Analytics */}
+      {activeTab === 'cockpit' && (
+        <main className="workspace-split">
+          {/* Left Pane: Prospects List */}
+          <section className="left-pane">
+            <ProspectsList
+              cohort={cohort}
+              selectedLeadId={selectedLeadId}
+              activeFilter={activeFilter}
+              onFilterChange={setActiveFilter}
+              onSelectLead={setSelectedLeadId}
+              onToggleCheckbox={handleToggleCheckbox}
+              onToggleSelectAll={handleToggleSelectAll}
+            />
+          </section>
 
-        {/* Right Pane: Email Conversation Thread View */}
-        <section className="right-pane">
-          <EmailConversationPane
-            lead={selectedLead}
-            onRunAgent={handleRunAgent}
-            isRunningAgent={runningAgentId === selectedLeadId}
-          />
-        </section>
-      </main>
+          {/* Right Pane: Email Conversation Thread View */}
+          <section className="right-pane">
+            <EmailConversationPane
+              lead={selectedLead}
+              onRunAgent={handleRunAgent}
+              isRunningAgent={runningAgentId === selectedLeadId}
+            />
+          </section>
+        </main>
+      )}
+
+      {activeTab === 'architecture' && <ArchitectureView />}
+
+      {activeTab === 'analytics' && <AnalyticsView metrics={metrics} />}
 
       {/* Real-time Telemetry Footer */}
       <TelemetryLog
