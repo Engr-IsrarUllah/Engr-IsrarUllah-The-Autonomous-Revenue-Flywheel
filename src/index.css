@@ -2352,4 +2352,166 @@ body.light-theme {
     border: 1px solid var(--border-color);
 }
 
+/* =========================================================
+   9. REVENUE ACCELERATION SVG CURVE
+   ========================================================= */
+.curve-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.curve-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.curve-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--indigo);
+    background: var(--indigo-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+.curve-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.curve-legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-sub);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-line {
+    width: 20px;
+    height: 3px;
+    border-radius: 2px;
+}
+
+.line-ai {
+    background: var(--indigo);
+}
+
+.line-human {
+    background: #ef4444;
+    border-top: 1px dashed #ef4444;
+}
+
+.svg-chart-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.revenue-svg {
+    width: 100%;
+    height: 220px;
+    overflow: visible;
+}
+
+.axis-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    fill: #94a3b8;
+}
+
+.chart-dot {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.dot-idle {
+    fill: #ffffff;
+    stroke: var(--indigo);
+    stroke-width: 2.5;
+}
+
+.dot-active {
+    fill: #ffffff;
+    stroke: var(--indigo);
+    stroke-width: 3;
+    filter: drop-shadow(0 0 4px rgba(79, 70, 229, 0.4));
+}
+
+.dot-peak {
+    fill: var(--emerald);
+    stroke: #ffffff;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+}
+
+.timeline-labels-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.timeline-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--bg-card-subtle);
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+}
+
+.timeline-col:hover,
+.timeline-col.hovered {
+    background: #ffffff;
+    border-color: var(--indigo);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+.point-amt {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.point-day {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--indigo);
+}
+
+.point-milestone {
+    font-size: 0.64rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+    margin-top: 2px;
+}
+
+
 

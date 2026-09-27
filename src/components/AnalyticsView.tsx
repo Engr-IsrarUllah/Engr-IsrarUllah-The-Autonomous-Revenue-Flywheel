@@ -1,5 +1,5 @@
-import React from 'react';
-import { TrendingUp, Clock, ShieldCheck, Zap, DollarSign, Users, Award, BarChart3 } from 'lucide-react';
+import React, { useState } from 'react';
+import { TrendingUp, Clock, Zap, DollarSign, Users, Award, BarChart3, ArrowUpRight } from 'lucide-react';
 import { CohortMetrics } from '../types';
 
 interface AnalyticsViewProps {
@@ -7,8 +7,18 @@ interface AnalyticsViewProps {
 }
 
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ metrics }) => {
+  const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
+
   const resolvedCount = metrics.automated || 20;
   const pipelineValue = resolvedCount * 3540;
+
+  const dataPoints = [
+    { day: 'Launch', value: 0, label: '$0', milestone: 'Campaign Dispatched (20 accounts)' },
+    { day: 'Day 1', value: 12400, label: '$12,400', milestone: 'Gear 1: Stakeholders Discovered & Enrolled' },
+    { day: 'Day 2', value: 29800, label: '$29,800', milestone: 'Gear 2: Sequence Step Live-Mutated' },
+    { day: 'Day 3', value: 52100, label: '$52,100', milestone: 'Inbound Buying Signals Classified' },
+    { day: 'Day 4 (Today)', value: pipelineValue, label: `$${pipelineValue.toLocaleString()}`, milestone: 'Gear 3: CPQ Quotes & Stripe E-Signs Delivered' },
+  ];
 
   return (
     <div className="view-container">
@@ -69,6 +79,104 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ metrics }) => {
             <div className="analytics-label">SDR LABOR HOURS SAVED</div>
             <div className="analytics-value">142 Hours / Mo</div>
             <div className="analytics-delta positive">$7,100 / Mo FTE Savings</div>
+          </div>
+        </div>
+      </div>
+
+      {/* NEW: Stripe-Style Revenue Acceleration SVG Curve */}
+      <div className="chart-panel curve-panel">
+        <div className="curve-header-row">
+          <div>
+            <div className="curve-badge">
+              <TrendingUp size={13} />
+              <span>PIPELINE ACCELERATION TRAJECTORY</span>
+            </div>
+            <h3 className="curve-title">Cumulative Deal Value Over Cohort Lifecycle</h3>
+          </div>
+
+          <div className="curve-legend">
+            <div className="legend-item">
+              <span className="legend-line line-ai" />
+              <span>Graph8 Autopilot (${pipelineValue.toLocaleString()})</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-line line-human" />
+              <span>Manual SDR Baseline ($14,160)</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Responsive SVG Chart */}
+        <div className="svg-chart-wrapper">
+          <svg viewBox="0 0 740 220" className="revenue-svg" preserveAspectRatio="none">
+            <defs>
+              {/* Gradient for AI curve fill */}
+              <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.32" />
+                <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.0" />
+              </linearGradient>
+            </defs>
+
+            {/* Grid horizontal lines */}
+            <line x1="60" y1="20" x2="720" y2="20" stroke="#f1f5f9" strokeDasharray="3 3" />
+            <text x="15" y="24" className="axis-text">$75k</text>
+
+            <line x1="60" y1="75" x2="720" y2="75" stroke="#f1f5f9" strokeDasharray="3 3" />
+            <text x="15" y="79" className="axis-text">$50k</text>
+
+            <line x1="60" y1="130" x2="720" y2="130" stroke="#f1f5f9" strokeDasharray="3 3" />
+            <text x="15" y="134" className="axis-text">$25k</text>
+
+            <line x1="60" y1="185" x2="720" y2="185" stroke="#e2e8f0" />
+            <text x="25" y="189" className="axis-text">$0</text>
+
+            {/* Manual Human Baseline (Dashed Red Line) */}
+            <path
+              d="M 80 185 C 220 180, 450 165, 700 152"
+              fill="none"
+              stroke="#ef4444"
+              strokeWidth="2"
+              strokeDasharray="5 5"
+              opacity="0.7"
+            />
+
+            {/* AI Gradient Fill Area */}
+            <path
+              d="M 80 185 C 220 160, 360 120, 520 65 S 640 35, 700 28 L 700 185 Z"
+              fill="url(#curveGradient)"
+            />
+
+            {/* AI Smooth Primary Line */}
+            <path
+              d="M 80 185 C 220 160, 360 120, 520 65 S 640 35, 700 28"
+              fill="none"
+              stroke="#4f46e5"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+            />
+
+            {/* Data Points */}
+            <circle cx="80" cy="185" r="4.5" className="chart-dot dot-idle" />
+            <circle cx="230" cy="158" r="5" className="chart-dot dot-active" />
+            <circle cx="390" cy="116" r="5" className="chart-dot dot-active" />
+            <circle cx="540" cy="62" r="5" className="chart-dot dot-active" />
+            <circle cx="700" cy="28" r="6.5" className="chart-dot dot-peak" />
+          </svg>
+
+          {/* Bottom Milestone Labels */}
+          <div className="timeline-labels-row">
+            {dataPoints.map((dp, i) => (
+              <div
+                key={i}
+                className={`timeline-col ${hoveredPoint === i ? 'hovered' : ''}`}
+                onMouseEnter={() => setHoveredPoint(i)}
+                onMouseLeave={() => setHoveredPoint(null)}
+              >
+                <div className="point-amt">{dp.label}</div>
+                <div className="point-day">{dp.day}</div>
+                <div className="point-milestone">{dp.milestone}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
