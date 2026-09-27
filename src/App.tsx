@@ -4,7 +4,6 @@ import { KpiSummary } from './components/KpiSummary';
 import { ProspectsList } from './components/ProspectsList';
 import { EmailConversationPane } from './components/EmailConversationPane';
 import { EmailComposeModal } from './components/EmailComposeModal';
-import { TelemetryLog } from './components/TelemetryLog';
 import { AnalyticsView } from './components/AnalyticsView';
 import { CohortProspect, CohortMetrics, FlywheelEvent } from './types';
 import './index.css';
@@ -271,13 +270,6 @@ export const App: React.FC = () => {
 
       {activeTab === 'analytics' && <AnalyticsView cohort={cohort} metrics={metrics} />}
 
-      {/* Real-time Telemetry Footer */}
-      <TelemetryLog
-        logs={logs}
-        onClear={() => setLogs([])}
-        sequenceId={config.sequenceId}
-        stepId={config.stepId}
-      />
 
       {/* Compose / Edit Outbound Email Modal */}
       <EmailComposeModal
