@@ -383,6 +383,7 @@ app.get('/api/health', (req: Request, res: Response) => {
             stepId: G8_CONFIG.stepId,
             userEmail: G8_CONFIG.userEmail
         }
+    });
 });
 
 // Serve Vite frontend in production if dist directory exists
