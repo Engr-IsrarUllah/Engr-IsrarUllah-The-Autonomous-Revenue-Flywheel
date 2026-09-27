@@ -1,11 +1,11 @@
 import { g8 } from '@graph8/sdk';
 
 export const G8_CONFIG = {
-    apiKey: process.env.G8_API_KEY || 'g8_live_7389278de41e98adea5c3e5d27b651e21f41b22eaa5ca66c8bdab1acf219eb717701d623b59c556fa3f6429dacf59798',
+    apiKey: process.env.G8_API_KEY || (() => { throw new Error('Missing env: G8_API_KEY'); })(),
     baseUrl: process.env.G8_BASE_URL || 'https://be.graph8.com/api/v1',
-    userEmail: process.env.G8_USER_EMAIL || 'engrisrar256@gmail.com',
-    sequenceId: process.env.G8_SEQUENCE_ID || '81257cc3-e7fb-4274-a1d5-786f48cd713e',
-    stepId: process.env.G8_STEP_ID || '32fe95ad-a791-4fce-9d40-145d0f98bd40'
+    userEmail: process.env.G8_USER_EMAIL || (() => { throw new Error('Missing env: G8_USER_EMAIL'); })(),
+    sequenceId: process.env.G8_SEQUENCE_ID || (() => { throw new Error('Missing env: G8_SEQUENCE_ID'); })(),
+    stepId: process.env.G8_STEP_ID || (() => { throw new Error('Missing env: G8_STEP_ID'); })()
 };
 
 // Initialize SDK
