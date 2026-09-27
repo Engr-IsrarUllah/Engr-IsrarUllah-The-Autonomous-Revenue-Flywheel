@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
 import { flywheelEmitter, runFlywheel, runFlywheelSimultaneous, DEMO_PRESETS, FlywheelEvent } from './engine';
 import { G8_CONFIG } from './graph8-client';
 import { batchManager } from './batch';
@@ -381,8 +383,22 @@ app.get('/api/health', (req: Request, res: Response) => {
             stepId: G8_CONFIG.stepId,
             userEmail: G8_CONFIG.userEmail
         }
-    });
 });
+
+// Serve Vite frontend in production if dist directory exists
+const distPath = fs.existsSync(path.resolve(process.cwd(), 'dist'))
+    ? path.resolve(process.cwd(), 'dist')
+    : path.resolve(__dirname, '../dist');
+
+if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    app.use((req: Request, res: Response, next) => {
+        if (req.method === 'GET' && !req.path.startsWith('/api')) {
+            return res.sendFile(path.join(distPath, 'index.html'));
+        }
+        next();
+    });
+}
 
 app.listen(PORT, () => {
     console.log(`\n==================================================`);
