@@ -271,7 +271,7 @@ export const App: React.FC = () => {
 
       {activeTab === 'architecture' && <ArchitectureView />}
 
-      {activeTab === 'analytics' && <AnalyticsView metrics={metrics} />}
+      {activeTab === 'analytics' && <AnalyticsView cohort={cohort} metrics={metrics} />}
 
       {/* Real-time Telemetry Footer */}
       <TelemetryLog
