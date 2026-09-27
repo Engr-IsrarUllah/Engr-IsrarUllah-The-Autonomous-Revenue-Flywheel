@@ -1,7 +1,7 @@
 import React from 'react';
 import { Send, CheckCircle2, RotateCcw, Edit3, Zap, GitBranch, BarChart3 } from 'lucide-react';
 
-export type DashboardTab = 'cockpit' | 'architecture' | 'analytics';
+export type DashboardTab = 'cockpit' | 'analytics';
 
 interface HeaderProps {
   activeTab: DashboardTab;
@@ -54,13 +54,6 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <Zap size={13} />
           <span>Live Cockpit</span>
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'architecture' ? 'active' : ''}`}
-          onClick={() => onTabChange('architecture')}
-        >
-          <GitBranch size={13} />
-          <span>3-Gear Architecture</span>
         </button>
         <button
           className={`nav-tab-btn ${activeTab === 'analytics' ? 'active' : ''}`}

@@ -5,7 +5,6 @@ import { ProspectsList } from './components/ProspectsList';
 import { EmailConversationPane } from './components/EmailConversationPane';
 import { EmailComposeModal } from './components/EmailComposeModal';
 import { TelemetryLog } from './components/TelemetryLog';
-import { ArchitectureView } from './components/ArchitectureView';
 import { AnalyticsView } from './components/AnalyticsView';
 import { CohortProspect, CohortMetrics, FlywheelEvent } from './types';
 import './index.css';
@@ -269,7 +268,6 @@ export const App: React.FC = () => {
         </main>
       )}
 
-      {activeTab === 'architecture' && <ArchitectureView />}
 
       {activeTab === 'analytics' && <AnalyticsView cohort={cohort} metrics={metrics} />}
 
